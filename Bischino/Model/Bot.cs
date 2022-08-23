@@ -126,8 +126,9 @@ namespace Bischino.Model
             var possibleBets = BetViewModel.PossibleBets;
             var hasPaolo = Cards.Any(card => card.IsPaolo);
 
-            if (hasPaolo && bet != 0)
-                bet -= 1;
+            if (hasPaolo)
+                if (Cards.Count == 2)
+                    bet = 1;
 
             bet = FixBet(bet);
             bet = GetNear(bet, possibleBets, hasPaolo);
