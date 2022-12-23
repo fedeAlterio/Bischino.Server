@@ -48,6 +48,7 @@ namespace Bischino.Model
 
         public IActionResult GetJoinedPLayers([FromBody] RoomQuery roomQuery) => TryValuedOk(() =>
         {
+        //
             var waitingRoomInfo = _gameHandler.GetWaitingRoomInfo(roomQuery);
             var joinedPlayers = new List<string>(waitingRoomInfo.NotBotPlayers);
             for (int i = 0; i < waitingRoomInfo.BotCounter; i++)
