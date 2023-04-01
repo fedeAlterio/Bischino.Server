@@ -40,7 +40,7 @@ namespace Bischino
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddMvc(option => option.EnableEndpointRouting = false);
 
             var dbSettings = Configuration.GetSection("DBConfig").Get<DatabaseSettings>();
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
