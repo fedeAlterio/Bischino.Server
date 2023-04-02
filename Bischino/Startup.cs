@@ -20,6 +20,7 @@ using Bischino.Base.Service;
 using Bischino.Model;
 using Bischino.Settings;
 using Bischino.Skribble;
+using Microsoft.Extensions.Logging;
 
 namespace Bischino
 {
@@ -43,8 +44,7 @@ namespace Bischino
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
             var dbSettings = Configuration.GetSection("DBConfig").Get<DatabaseSettings>();
-            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
-            var applcationInsightsSettings = Configuration.GetSection("ApplicationInsights").Get<ApplicationInsightsSettings>();
+            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();            
 
             AddAuthService(services, jwtSettings);
             DBServiceFactory = new CollectionServiceFactory(dbSettings);
@@ -81,6 +81,7 @@ namespace Bischino
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.ApplicationServices.GetRequiredService<ILogger<Startup>>().LogError("AAAA");
             app.UseDefaultFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

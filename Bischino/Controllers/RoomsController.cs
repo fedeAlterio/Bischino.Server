@@ -16,6 +16,7 @@ using Bischino.Model.Exeptions;
 using Bischino.Test;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Bischino.Model
@@ -23,10 +24,13 @@ namespace Bischino.Model
     public class RoomsController : AbstractController
     {
         private readonly IGameHandler _gameHandler;
+        private readonly ILogger<RoomsController> _logger;
 
-        public RoomsController(IGameHandler gameHandler)
+        public RoomsController(IGameHandler gameHandler, ILogger<RoomsController> logger)
         {
             _gameHandler = gameHandler;
+            _logger = logger;
+            _logger.LogError("AAAA");
         }
 
 
