@@ -41,6 +41,7 @@ namespace Bischino
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
             var dbSettings = Configuration.GetSection("DBConfig").Get<DatabaseSettings>();
@@ -50,7 +51,6 @@ namespace Bischino
             DBServiceFactory = new CollectionServiceFactory(dbSettings);
             DBServiceFactory.AddDBServices(services);
 
-            services.AddApplicationInsightsTelemetry();
 
 
             var gameHandler = new GameHandler();
@@ -80,8 +80,7 @@ namespace Bischino
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.ApplicationServices.GetRequiredService<ILogger<Startup>>().LogError("AAAA");
+        {            
             app.UseDefaultFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>
