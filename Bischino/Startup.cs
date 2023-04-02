@@ -22,6 +22,8 @@ using Bischino.Settings;
 using Bischino.Skribble;
 using Microsoft.Extensions.Logging;
 using Bischino.HostedServices;
+using Bischino.Middlewares;
+using Bischino.Services;
 
 namespace Bischino
 {
@@ -55,6 +57,8 @@ namespace Bischino
             var gameHandler = new GameHandler();
             services.AddHostedService<ApplicationMonitoringHostedService>();
             services.AddSingleton<IGameHandler>(gameHandler);
+            services.AddSingleton<ApplicationContext>();
+            services.AddSingleton<IApplicationContext>(s => s.GetService<ApplicationContext>());
 
             var skribbleHandler = new SkribbleHandler();
             services.AddSingleton<ISkribbleHandler>(skribbleHandler);
@@ -80,7 +84,8 @@ namespace Bischino
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {            
+        {
+            app.UseMiddleware<ApplicationLifetimeLoggerMiddleware>();
             app.UseDefaultFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

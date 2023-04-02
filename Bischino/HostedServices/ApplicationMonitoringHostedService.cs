@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Bischino.Services;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,17 +9,16 @@ namespace Bischino.HostedServices
 {
     public class ApplicationMonitoringHostedService : BackgroundService
     {
-        private readonly ILogger<ApplicationMonitoringHostedService> _logger;
+        private readonly ApplicationContext _applicationContext;
 
-        public ApplicationMonitoringHostedService(ILogger<ApplicationMonitoringHostedService> logger)
+        public ApplicationMonitoringHostedService(ApplicationContext applicationContext)
         {
-            _logger = logger;
+            _applicationContext = applicationContext;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogWarning("Application Started!");
-            await Task.CompletedTask;
+            _applicationContext.StartDate = DateTime.Now;          
         }
     }
 }
