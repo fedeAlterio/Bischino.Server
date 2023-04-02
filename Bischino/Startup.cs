@@ -26,7 +26,7 @@ namespace Bischino
     public class Startup
     {
         public IConfigurationRoot Configuration { get; set; }
-        private CollectionServiceFactory DBServiceFactory { get; set; }
+        private CollectionServiceFactory DBServiceFactory { get; set; }        
 
         public Startup(IWebHostEnvironment env)
         {
@@ -44,10 +44,13 @@ namespace Bischino
 
             var dbSettings = Configuration.GetSection("DBConfig").Get<DatabaseSettings>();
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
+            var applcationInsightsSettings = Configuration.GetSection("ApplicationInsights").Get<ApplicationInsightsSettings>();
 
             AddAuthService(services, jwtSettings);
             DBServiceFactory = new CollectionServiceFactory(dbSettings);
             DBServiceFactory.AddDBServices(services);
+
+            services.AddApplicationInsightsTelemetry();
 
 
             var gameHandler = new GameHandler();

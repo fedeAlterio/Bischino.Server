@@ -20,7 +20,6 @@ namespace Bischino.Model
 
             if (room.Name.Any(char.IsWhiteSpace))
                 ThrowValidationEx("Please insert a valid room name");
-
         }
         public Room Create(Room room)
         {
