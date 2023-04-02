@@ -21,6 +21,7 @@ using Bischino.Model;
 using Bischino.Settings;
 using Bischino.Skribble;
 using Microsoft.Extensions.Logging;
+using Bischino.HostedServices;
 
 namespace Bischino
 {
@@ -51,9 +52,8 @@ namespace Bischino
             DBServiceFactory = new CollectionServiceFactory(dbSettings);
             DBServiceFactory.AddDBServices(services);
 
-
-
             var gameHandler = new GameHandler();
+            services.AddHostedService<ApplicationMonitoringHostedService>();
             services.AddSingleton<IGameHandler>(gameHandler);
 
             var skribbleHandler = new SkribbleHandler();
