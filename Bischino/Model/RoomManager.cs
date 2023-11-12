@@ -113,10 +113,16 @@ namespace Bischino.Model
             {
                 var snapshot = GameManager.GetSnapshot(playerName);
                 snapshotWrapper.NotifyNew(snapshot);
-                _inGameTimer?.Stop();
-                if(!GameManager.GameEnded)
-                    _inGameTimer?.Start();
+                RestartTimer();
             }
+        }
+
+        void RestartTimer()
+        {
+            var inGameTimer = _inGameTimer;
+            inGameTimer.Stop();
+            if (!GameManager.GameEnded)
+                _inGameTimer.Start();
         }
 
 

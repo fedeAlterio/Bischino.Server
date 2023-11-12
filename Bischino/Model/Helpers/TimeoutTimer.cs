@@ -12,8 +12,6 @@ namespace Bischino.Model.Helpers
         public T Tag { get; }
         private readonly int _timeoutMs;
         private CancellationTokenSource _tokenSource;
-        private Task _timerTask;
-        private bool _isTimeoutForced;
 
         public bool IsEnabled { get; private set; }
 
@@ -23,51 +21,40 @@ namespace Bischino.Model.Helpers
             _timeoutMs = timeoutMs;
         }
 
-        private async Task TimerRoutine()
-        {
-            _tokenSource = new CancellationTokenSource();
-            var token = _tokenSource.Token;
-            IsEnabled = true;
+        private async Task TimerRoutine(CancellationToken token)
+        {        
             try
             {
                 await Task.Delay(_timeoutMs, _tokenSource.Token);
+                token.ThrowIfCancellationRequested();
                 TimeoutEvent?.Invoke(this, Tag);
             }
             catch (TaskCanceledException) when (token.IsCancellationRequested)
             {
-                if (_isTimeoutForced)
-                    TimeoutEvent?.Invoke(this, Tag);
-            }
-            finally
-            {
-                IsEnabled = false;
+           
             }
         }
 
         public void Start()
         {
-            _timerTask = TimerRoutine();
+            _tokenSource = new CancellationTokenSource();
+            _ = TimerRoutine(_tokenSource.Token);
+            IsEnabled = true;
         }
 
-        public async Task ForceTimeout()
+        public void Reset()
         {
-            _isTimeoutForced = true;
-            await Stop();
-            _isTimeoutForced = false;
-        }
-
-        public async Task Reset()
-        {
-            await Stop(); 
+            Stop(); 
             Start();
         }
 
-        public async Task Stop()
+        public void Stop()
         {
-            _tokenSource?.Cancel();
-            await _timerTask;
+            var tokenSource = _tokenSource;
             _tokenSource = null;
+            tokenSource?.Cancel();
+            tokenSource?.Dispose();
+            IsEnabled = false;
         }
-
     }
 }

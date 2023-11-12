@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,6 +8,7 @@
     <SuppressDockerTargets>True</SuppressDockerTargets>
     <StartupObject>Bischino.Program</StartupObject>
     <UserSecretsId>60f0bea0-d094-40eb-bd08-d13ee80634f3</UserSecretsId>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
